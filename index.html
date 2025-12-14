@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Algorithms Demo - Premium</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <aside class="sidebar glass">
+            <div class="logo">
+                <h2>AI Demo</h2>
+                <p>Advanced Algorithms</p>
+            </div>
+            <nav>
+                <button class="nav-btn active" data-target="astar">
+                    <span class="icon">🔍</span> A* Pathfinding
+                </button>
+                <button class="nav-btn" data-target="minimax">
+                    <span class="icon">🎮</span> Minimax AI
+                </button>
+                <button class="nav-btn" data-target="graph">
+                    <span class="icon">🎨</span> Graph Coloring
+                </button>
+            </nav>
+            <div class="author-info">
+                <p>Student Demo</p>
+            </div>
+        </aside>
+
+        <main class="content-area">
+            <!-- A* Section -->
+            <section id="astar" class="algo-section active">
+                <header class="section-header glass-panel">
+                    <h1>A* Pathfinding Algorithm</h1>
+                    <p>Find shortest path with Heuristics</p>
+                </header>
+
+                <div class="workspace">
+                    <div class="controls glass-panel">
+                        <h3>Controls</h3>
+                        <div class="control-group">
+                            <label>Grid Size</label>
+                            <input type="number" id="astar-size" value="20" min="5" max="50">
+                        </div>
+                        <div class="control-group">
+                            <label>Heuristic</label>
+                            <select id="astar-heuristic">
+                                <option value="manhattan">Manhattan</option>
+                                <option value="euclidean">Euclidean</option>
+                            </select>
+                        </div>
+                        <div class="actions">
+                            <button id="astar-run" class="btn-primary">Run Algorithm</button>
+                            <button id="astar-reset" class="btn-secondary">Reset Grid</button>
+                        </div>
+                        <div class="legend">
+                            <span class="item start">Start</span>
+                            <span class="item end">End</span>
+                            <span class="item wall">Wall</span>
+                        </div>
+                    </div>
+
+                    <div class="visualization glass-panel">
+                        <canvas id="astar-canvas"></canvas>
+                        <div id="astar-stats" class="stats-overlay">
+                            Ready to start...
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Minimax Section -->
+            <section id="minimax" class="algo-section hidden">
+                <header class="section-header glass-panel">
+                    <h1>Minimax Strategy</h1>
+                    <p>Tic-Tac-Toe / Gomoku with Alpha-Beta Pruning</p>
+                </header>
+
+                <div class="workspace">
+                    <div class="controls glass-panel">
+                        <h3>Game Settings</h3>
+                        <div class="control-group">
+                            <label>Game Type</label>
+                            <select id="minimax-type">
+                                <option value="3">Tic-Tac-Toe (3x3)</option>
+                                <option value="5">Gomoku Mini (5x5)</option>
+                                <option value="7">Gomoku Midi (7x7)</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label>AI Depth</label>
+                            <input type="range" id="minimax-depth" min="1" max="5" value="3">
+                            <span id="depth-val">3</span>
+                        </div>
+                        <div class="actions">
+                            <button id="minimax-restart" class="btn-primary">New Game</button>
+                        </div>
+                        <div class="status-box" id="minimax-status">
+                            Player Turn
+                        </div>
+                    </div>
+
+                    <div class="visualization glass-panel center-content">
+                        <div id="game-board" class="game-board board-3">
+                            <!-- Generated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Graph Coloring Section -->
+            <section id="graph" class="algo-section hidden">
+                <header class="section-header glass-panel">
+                    <h1>Màu Đồ Thị (Welsh-Powell)</h1>
+                    <p>Greedy Coloring with Degree Ordering</p>
+                </header>
+
+                <div class="workspace">
+                    <div class="controls glass-panel">
+                        <h3>Graph Params</h3>
+                        <div class="control-group">
+                            <label>Nodes</label>
+                            <input type="number" id="graph-nodes" value="8" min="3" max="20">
+                        </div>
+                        <div class="control-group">
+                            <label>Density</label>
+                            <input type="range" id="graph-density" min="0.1" max="1" step="0.1" value="0.4">
+                        </div>
+                        <div class="control-group">
+                            <label>Max Colors (Palette)</label>
+                            <input type="number" id="graph-colors-count" value="5" min="2" max="10">
+                        </div>
+                        <div class="actions">
+                            <button id="graph-gen" class="btn-secondary">New Graph</button>
+                            <button id="graph-run" class="btn-primary">Color Graph</button>
+                        </div>
+                        <div id="graph-colors-qa" class="color-qa">
+                            Colors Used: 0
+                        </div>
+                    </div>
+
+                    <div class="visualization glass-panel">
+                        <canvas id="graph-canvas"></canvas>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+
+</html>
