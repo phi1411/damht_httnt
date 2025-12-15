@@ -99,6 +99,31 @@ export function initGraphColoring() {
         '#ef4444', '#f97316', '#f59e0b', '#84cc16', '#10b981', '#06b6d4', '#3b82f6', '#8b5cf6', '#d946ef', '#f43f5e'
     ];
 
+    // Khởi tạo bảng màu động
+    const paletteGrid = document.getElementById('palette-grid');
+
+    function renderPalette() {
+        if (!paletteGrid) return;
+        paletteGrid.innerHTML = '';
+        const count = parseInt(maxColorsInput.value) || 5;
+
+        for (let i = 0; i < count; i++) {
+            const input = document.createElement('input');
+            input.type = 'color';
+            input.className = 'palette-color-input';
+            // Lấy màu mặc định từ mảng COLORS (xoay vòng nếu > length)
+            input.value = COLORS[i % COLORS.length];
+            input.title = `Màu ${i + 1}`;
+            paletteGrid.appendChild(input);
+        }
+    }
+
+    // Lắng nghe thay đổi số lượng màu để cập nhật bảng chọn
+    maxColorsInput.addEventListener('input', renderPalette);
+
+    // Gọi lần đầu
+    renderPalette();
+
     function draw() {
         if (canvas.width === 0) return;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -145,67 +170,50 @@ export function initGraphColoring() {
         let coloredCount = 0;
         const maxColors = parseInt(maxColorsInput.value) || 5;
 
+        // Lấy danh sách màu từ các ô input
+        const currentPalette = [];
+        const inputs = document.querySelectorAll('.palette-color-input');
+        inputs.forEach(inp => currentPalette.push(inp.value));
+
         const coloredSet = new Set();
 
-        // Vòng lặp tô màu
-        while (coloredCount < nodes.length) {
-            // Kiểm tra giới hạn màu
-            if (colorIndex >= maxColors) {
-                qaDiv.innerText = `Thất bại: Cần nhiều hơn ${maxColors} màu!`;
-                return;
-            }
-            if (colorIndex >= COLORS.length) {
-                qaDiv.innerText = "Hết mã màu trong bảng màu!";
-                return;
-            }
-            const currentColor = COLORS[colorIndex]; // Chọn màu hiện tại
+        // Duyệt từng đỉnh theo danh sách đã sắp xếp (Sequential Greedy)
+        for (const node of sortedNodes) {
+            // Tìm màu hợp lệ đầu tiên trong bảng màu
+            let foundColor = null;
 
-            // Tìm đỉnh đầu tiên chưa được tô màu (trong danh sách đã sắp xếp)
-            let firstNode = null;
-            for (let n of sortedNodes) {
-                if (!n.color) {
-                    firstNode = n;
-                    break;
+            for (let i = 0; i < currentPalette.length; i++) {
+                const colorCandid = currentPalette[i];
+
+                // Kiểm tra xem màu này có bị hàng xóm dùng chưa
+                let isSafe = true;
+                for (const neighbor of node.neighbors) {
+                    if (neighbor.color === colorCandid) {
+                        isSafe = false;
+                        break;
+                    }
                 }
-            }
-            if (!firstNode) break;
 
-            // Tô màu cho đỉnh đó
-            firstNode.color = currentColor;
-            coloredSet.add(firstNode.id);
-            coloredCount++;
-            draw();
-            await new Promise(r => setTimeout(r, 200)); // Animation chậm để dễ nhìn
-
-            // Duyệt danh sách các đỉnh còn lại, tô cùng màu nếu không kề nhau
-            for (let i = 0; i < sortedNodes.length; i++) {
-                const n = sortedNodes[i];
-                if (!n.color) {
-                    // Kiểm tra xem nó có kề với bất kỳ thằng nào đang dùng màu hiện tại không
-                    let isAdjacent = false;
-                    for (let neighbor of n.neighbors) {
-                        if (neighbor.color === currentColor) {
-                            isAdjacent = true;
-                            break;
-                        }
-                    }
-
-                    // Nếu không kề ai dùng màu này -> Tô luôn
-                    if (!isAdjacent) {
-                        n.color = currentColor;
-                        coloredSet.add(n.id);
-                        coloredCount++;
-                        draw();
-                        await new Promise(r => setTimeout(r, 100)); // Animation
-                    }
+                if (isSafe) {
+                    foundColor = colorCandid;
+                    break; // Chọn ngay màu này
                 }
             }
 
-            // Chuyển sang màu tiếp theo
-            colorIndex++;
+            if (foundColor) {
+                node.color = foundColor;
+                draw();
+                await new Promise(r => setTimeout(r, 200)); // Animation
+            } else {
+                // Không tìm được màu trong bảng màu giới hạn
+                // Có thể để trống hoặc báo lỗi (ở đây ta cứ để node không màu)
+                console.log(`Node ${node.id} không tìm được màu hợp lệ trong ${maxColors} màu.`);
+            }
         }
 
-        qaDiv.innerText = `Đã dùng ${colorIndex} màu (Welsh-Powell)`;
+        // Đếm số màu thực tế đã dùng
+        const usedColors = new Set(nodes.map(n => n.color).filter(c => c));
+        qaDiv.innerText = `Hoàn tất! Đã dùng ${usedColors.size} màu.`;
     }
 
     genBtn.addEventListener('click', generateGraph);

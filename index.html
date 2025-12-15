@@ -32,6 +32,21 @@
             <div class="author-info">
                 <p>Student Demo</p>
             </div>
+
+            <!-- Theme Selector -->
+            <div class="theme-selector"
+                style="margin-top: 1rem; padding: 10px 0; border-top: 1px solid var(--glass-border);">
+                <p style="margin-bottom: 8px; font-size: 0.8rem; color: var(--text-muted); padding-left: 5px;">Giao diện
+                </p>
+                <div style="display: flex; gap: 10px; padding-left: 5px;">
+                    <button class="theme-btn active" data-theme="1" title="Mặc định"
+                        style="background: linear-gradient(135deg, #38bdf8, #f472b6); width: 24px; height: 24px; border-radius: 50%; border: 2px solid white; padding: 0;"></button>
+                    <button class="theme-btn" data-theme="2" title="Thiên nhiên"
+                        style="background: linear-gradient(135deg, #4ade80, #a78bfa); width: 24px; height: 24px; border-radius: 50%; border: none; padding: 0;"></button>
+                    <button class="theme-btn" data-theme="3" title="Hoàng hôn"
+                        style="background: linear-gradient(135deg, #fbbf24, #f87171); width: 24px; height: 24px; border-radius: 50%; border: none; padding: 0;"></button>
+                </div>
+            </div>
         </aside>
 
         <main class="content-area">
@@ -136,6 +151,12 @@
                         <div class="control-group">
                             <label>Max Colors (Palette)</label>
                             <input type="number" id="graph-colors-count" value="5" min="2" max="10">
+                        </div>
+                        <div id="palette-container" class="control-group" style="padding-top: 5px;">
+                            <label>Palette Colors</label>
+                            <div id="palette-grid" style="display: flex; flex-wrap: wrap; gap: 5px;">
+                                <!-- Colors injected by JS -->
+                            </div>
                         </div>
                         <div class="actions">
                             <button id="graph-gen" class="btn-secondary">New Graph</button>

@@ -14,6 +14,26 @@
     --warn: #fbbf24;
 
     --font: 'Outfit', sans-serif;
+
+    /* Theme 1 (Default) Background */
+    --bg-gradient: radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.15) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(244, 114, 182, 0.15) 0%, transparent 20%);
+}
+
+/* Theme 2: Nature (Green/Purple) */
+body.theme-2 {
+    --primary: #4ade80;
+    --accent: #a78bfa;
+    --bg-gradient: radial-gradient(circle at 10% 20%, rgba(74, 222, 128, 0.15) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(167, 139, 250, 0.15) 0%, transparent 20%);
+}
+
+/* Theme 3: Sunset (Amber/Red) */
+body.theme-3 {
+    --primary: #fbbf24;
+    --accent: #f87171;
+    --bg-gradient: radial-gradient(circle at 10% 20%, rgba(251, 191, 36, 0.15) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(248, 113, 113, 0.15) 0%, transparent 20%);
 }
 
 * {
@@ -28,9 +48,7 @@ body {
     color: var(--text-main);
     height: 100vh;
     overflow: hidden;
-    background-image:
-        radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.15) 0%, transparent 20%),
-        radial-gradient(circle at 90% 80%, rgba(244, 114, 182, 0.15) 0%, transparent 20%);
+    background-image: var(--bg-gradient);
 }
 
 .app-container {
@@ -179,6 +197,26 @@ select {
     border-radius: 8px;
     font-family: var(--font);
     outline: none;
+}
+
+input[type="color"] {
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    border: none;
+    cursor: pointer;
+    background: transparent;
+    border-radius: 4px;
+    /* Optional rounded corners */
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+input[type="color"]::-webkit-color-swatch {
+    border: 1px solid var(--glass-border);
+    border-radius: 4px;
 }
 
 input:focus,
